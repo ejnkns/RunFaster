@@ -12,8 +12,9 @@ import com.spotify.protocol.types.PlayerState;
 import com.spotify.protocol.types.Track;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String CLIENT_ID = "56b91ce3ece947a2b9ba8a1b1d42a6cc";
-    private static final String REDIRECT_URI = "com.ejnkns.runfaster://callback";
+    // initialise spotify vars here, might need to use later
+    private static String CLIENT_ID;
+    private static String REDIRECT_URI;
     private SpotifyAppRemote mSpotifyAppRemote;
 
 
@@ -25,6 +26,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
+        // have to set the vars onStart so we know they'll be read
+        // properly from res/value and use getString
+        CLIENT_ID = getString(R.string.CLIENT_ID);
+        REDIRECT_URI = getString(R.string.REDIRECT_URI);
         super.onStart();
         // Set the connection parameters for spotify
         ConnectionParams connectionParams =
@@ -59,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void connected() {
         mSpotifyAppRemote.getPlayerApi().play("spotify:playlist:37i9dQZF1DX2sUQwD7tbmL");
-        // enable buttons
+        // can enable buttons now
     }
 
     @Override

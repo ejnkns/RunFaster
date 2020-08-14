@@ -13,3 +13,4 @@
 /app/release
 /app/src/androidTest*
 /app/src/test*
+/app/src/main/res/values/hidden-strings.xml
