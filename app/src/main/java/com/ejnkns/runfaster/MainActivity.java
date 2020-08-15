@@ -3,6 +3,8 @@ package com.ejnkns.runfaster;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
@@ -26,8 +28,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        // have to set the vars onStart so we know they'll be read
-        // properly from res/value and use getString
+        // have to set the vars in onStart so we know they'll be read
+        // properly from res/value by getString
+        // These strings are stored in an xml file ignored by git
         CLIENT_ID = getString(R.string.CLIENT_ID);
         REDIRECT_URI = getString(R.string.REDIRECT_URI);
         super.onStart();
@@ -62,9 +65,39 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    private void handlePlayerState(PlayerState playerState) {
+
+    }
+
     private void connected() {
+        // is there playerApi.load? not play yet?
         mSpotifyAppRemote.getPlayerApi().play("spotify:playlist:37i9dQZF1DX2sUQwD7tbmL");
+
+        // Subscribe to PlayerState
+        mSpotifyAppRemote.getPlayerApi()
+            .subscribeToPlayerState()
+            .setEventCallback(playerState -> {
+                handlePlayerState(playerState);
+            });
+
         // can enable buttons now
+        final Button playButton = findViewById(R.id.play_button);
+        playButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                // resume music
+                mSpotifyAppRemote.getPlayerApi().resume();
+                Log.d("MainActivity", "playing");
+
+            }
+        });
+        final Button pauseButton = findViewById(R.id.pause_button);
+        pauseButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                // pause music
+                mSpotifyAppRemote.getPlayerApi().pause();
+                Log.d("MainActivity", "pausing");
+            }
+        });
     }
 
     @Override

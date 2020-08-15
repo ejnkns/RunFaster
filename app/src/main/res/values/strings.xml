@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Run Faster</string>
+
+    // player strings
+    <string name="play_button">Play</string>
+    <string name="pause_button">Pause</string>
 </resources>
